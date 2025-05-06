@@ -1,29 +1,29 @@
 #include <stdio.h>
 #include <string.h>
 
-#define MAX_MESSAGES 100
-#define MAX_USERS 10
+#define MAX_CHAT_MESSAGES 100
+#define MAX_CHAT_USERS 10
 
-enum messageType { JOIN, LEAVE, MESSAGE };
+enum message_type { JOIN, LEAVE, MESSAGE };
 
-struct Message {
+struct chat_message {
     char sender[32];
     char content[128];
-    enum messageType type;
+    enum message_type type;
 };
 
-struct User {
+struct chat_user {
     char name[32];
     int online;
 };
 
-struct Message chat[MAX_MESSAGES];
-struct User users[MAX_USERS];
+struct chat_message chat_messages[MAX_CHAT_MESSAGES];
+struct chat_user chat_users[MAX_CHAT_USERS];
 
 int message_count = 0;
 int user_count = 0;
 
-void printMessage(struct Message *msg) {
+void print_message(struct chat_message *msg) {
     switch (msg->type) {
         case JOIN:
             printf("[%s] joined the chat\n", msg->sender);
@@ -40,55 +40,55 @@ void printMessage(struct Message *msg) {
     }
 }
 
-void updateUserStatus(const char *name, int online) {
+void update_user_status(const char *name, int online) {
     for (int i = 0; i < user_count; i++) {
-        if (strcmp(name, users[i].name) == 0) {
-            users[i].online = online;
+        if (strcmp(name, chat_users[i].name) == 0) {
+            chat_users[i].online = online;
             return;
         }
     }
     if (online == 1) {
-        strcpy(users[user_count].name, name);
-        users[user_count++].online = 1;
+        strcpy(chat_users[user_count].name, name);
+        chat_users[user_count++].online = 1;
     }
 }
 
-void printOnlineUsers(void) {
+void print_online_users(void) {
     int found = 0;
     for (int i = 0; i < user_count; i++) {
-        if (users[i].online == 1) {
+        if (chat_users[i].online == 1) {
             if (!found) {
-                printf("\nUsers still online:\n");
+                printf("\nchat_users still online:\n");
                 found = 1;
             }
-            printf("- %s\n", users[i].name);
+            printf("- %s\n", chat_users[i].name);
         }
     }
     if (!found) {
-        printf("No users currently online.\n");
+        printf("No chat_users currently online.\n");
     }
 }
 
 int main() {
-    updateUserStatus("Alice", 1);
-    chat[message_count++] = (struct Message){"Alice", "", JOIN};
+    update_user_status("Alice", 1);
+    chat_messages[message_count++] = (struct chat_message){"Alice", "", JOIN};
 
-    updateUserStatus("Bob", 1);
-    chat[message_count++] = (struct Message){"Bob", "", JOIN};
+    update_user_status("Bob", 1);
+    chat_messages[message_count++] = (struct chat_message){"Bob", "", JOIN};
 
-    chat[message_count++] = (struct Message){"Alice", "Hey Bob!", MESSAGE};
+    chat_messages[message_count++] = (struct chat_message){"Alice", "Hey Bob!", MESSAGE};
 
-    chat[message_count++] = (struct Message){"Bob", "Hey Alice!", MESSAGE};
+    chat_messages[message_count++] = (struct chat_message){"Bob", "Hey Alice!", MESSAGE};
 
-    updateUserStatus("Alice", 0);
-    chat[message_count++] = (struct Message){"Alice", "", LEAVE};
+    update_user_status("Alice", 0);
+    chat_messages[message_count++] = (struct chat_message){"Alice", "", LEAVE};
 
-    updateUserStatus("Bob", 0);
-    chat[message_count++] = (struct Message){"Bob", "", LEAVE};
+    update_user_status("Bob", 0);
+    chat_messages[message_count++] = (struct chat_message){"Bob", "", LEAVE};
 
     for (int i = 0; i < message_count; i++) {
-        printMessage(&chat[i]);
+        print_message(&chat_messages[i]);
     }
 
-    printOnlineUsers();
+    print_online_users();
 }
