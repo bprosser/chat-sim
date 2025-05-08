@@ -93,8 +93,8 @@ void load_users_from_file(void) {
         // Use the string complement span (strcspn) function to find the index of the first newline
         // or carriage return, and replace with '\0' to clean the string
 
-        username[strcspn(username, "\n")] = '\0';
-        status[strcspn(status, "\n")] = '\0';
+        username[strcspn(username, "\r\n")] = '\0';
+        status[strcspn(status, "\r\n")] = '\0';
 
         int online = -1;
         if (strcmp(status, "online") == 0)
