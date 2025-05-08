@@ -79,6 +79,9 @@ void load_users_from_file(void) {
 
     char buffer[128];
     while (fgets(buffer, sizeof(buffer), file) != NULL) {
+        // Use the string tokenizer (strtok) function to split the string into tokens
+        // First call: pass the full string
+        // Subsequent calls: pass NULL to continue from the previous position
         char *username = strtok(buffer, ",");
         char *status = strtok(NULL, ",");
 
@@ -86,6 +89,9 @@ void load_users_from_file(void) {
             fprintf(stderr, "Malformed line: %s", buffer);
             continue;
         }
+
+        // Use the string complement span (strcspn) function to find the index of the first newline
+        // or carriage return, and replace with '\0' to clean the string
 
         username[strcspn(username, "\n")] = '\0';
         status[strcspn(status, "\n")] = '\0';
