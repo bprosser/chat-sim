@@ -117,7 +117,30 @@ void load_users_from_file(void) {
     fclose(file);
 }
 
+void save_users_to_file(void) {
+    FILE *file = fopen(USER_DATA_FILE, "w");
+    if (file == NULL) {
+        printf("Error opening file\n");
+        return;
+    }
+    for (int i = 0; i < user_count; i++) {
+        if (chat_users[i].name[0] != '\0') {
+            const char *status_str = (chat_users[i].online) ? "online" : "offline";
+            fprintf(file, "%s,%s\r\n", chat_users[i].name, status_str);
+        }
+    }
+    fclose(file);
+}
+
 int main() {
+    update_user_status("jim",1);
+    update_user_status("dan",0);
+    update_user_status("matt",1);
+    save_users_to_file();
+    // clear user_count and chat_users[] array to simulate restart
+    user_count = 0;
+    // memset() function zeros out the entire array
+    memset(chat_users, 0, sizeof(chat_users));
     load_users_from_file();
     print_online_users();
 
