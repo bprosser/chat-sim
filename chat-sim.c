@@ -132,40 +132,42 @@ void save_users_to_file(void) {
     fclose(file);
 }
 
+void log_chat_event(char *sender, char *content, enum message_type type) {
+    strcpy(chat_messages[message_count].sender, sender);
+    strcpy(chat_messages[message_count].content, content);
+    chat_messages[message_count].type = type;
+    message_count++;
+    print_message(&chat_messages[message_count - 1]);
+}
+
 int main() {
-    update_user_status("jim",1);
-    update_user_status("dan",0);
-    update_user_status("matt",1);
-    save_users_to_file();
-    // clear user_count and chat_users[] array to simulate restart
-    user_count = 0;
-    // memset() function zeros out the entire array
-    memset(chat_users, 0, sizeof(chat_users));
     load_users_from_file();
     print_online_users();
-
-    /* Simulated chat messages temporarily disabled
-
-    update_user_status("Alice", 1);
-    chat_messages[message_count++] = (struct chat_message){"Alice", "", JOIN};
-
-    update_user_status("Bob", 1);
-    chat_messages[message_count++] = (struct chat_message){"Bob", "", JOIN};
-
-    chat_messages[message_count++] = (struct chat_message){"Alice", "Hey Bob!", MESSAGE};
-
-    chat_messages[message_count++] = (struct chat_message){"Bob", "Hey Alice!", MESSAGE};
-
-    update_user_status("Alice", 0);
-    chat_messages[message_count++] = (struct chat_message){"Alice", "", LEAVE};
-
-    update_user_status("Bob", 0);
-    chat_messages[message_count++] = (struct chat_message){"Bob", "", LEAVE};
-
-    for (int i = 0; i < message_count; i++) {
-        print_message(&chat_messages[i]);
-    }
-
-    */
+    char buffer[128];
+    char *result;
+    do {
+        printf("> ");
+        result = fgets(buffer, sizeof(buffer), stdin);
+        buffer[strcspn(buffer, "\n")] = '\0';
+        char *command = strtok(buffer, " ");
+        char *args = strtok(NULL, "");
+        if (strcmp(command, "join") == 0) {
+            log_chat_event(args, "", JOIN);
+            update_user_status(args, 1);
+        } else if (strcmp(command, "send") == 0) {
+            char *send_name = strtok(args, " ");
+            char *send_msg = strtok(NULL, "");
+            log_chat_event(send_name, send_msg, MESSAGE);
+        } else if (strcmp(command, "list") == 0) {
+            print_online_users();
+        } else if (strcmp(command, "leave") == 0) {
+            log_chat_event(args, "", LEAVE);
+            update_user_status(args, 0);
+            print_online_users();
+        } else if (strcmp(command, "exit") == 0) {
+            save_users_to_file();
+            return 0;
+        }
+    } while (result != NULL);
     return 0;
 }
