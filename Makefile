@@ -1,12 +1,16 @@
 cc = gcc
 CFLAGS = -Wall -Wextra -std=c11 -g
 TARGET = chat-sim
-SRC = chat-sim.c
+SRC = main.c chat.c persistence.c
+OBJ = $(SRC:.c=.o)
 
-$TARGET: $(SRC)
-	$(CC) $(CFLAGS) -o $(TARGET) $(SRC)
+$(TARGET): $(OBJ)
+	$(CC) $(CFLAGS) -o $@ $^
+
+%.o: %.c
+	$(CC) $(CFLAGS) -c $<
 
 .PHONY: clean
 
 clean:
-	rm -f $(TARGET)
+	rm -f *.o $(TARGET)
