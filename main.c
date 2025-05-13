@@ -27,7 +27,6 @@ int main() {
         } else if (strcmp(command, "leave") == 0) {
             log_chat_event(args, "", LEAVE);
             update_user_status(args, 0);
-            print_online_users();
         } else if (strcmp(command, "exit") == 0) {
             save_users_to_file();
             return 0;
