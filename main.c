@@ -2,6 +2,7 @@
 #include <string.h>
 
 #include "chat.h"
+#include "commands.h"
 #include "persistence.h"
 
 int main() {
@@ -16,20 +17,15 @@ int main() {
         char *command = strtok(buffer, " ");
         char *args = strtok(NULL, "");
         if (strcmp(command, "join") == 0) {
-            log_chat_event(args, "", JOIN);
-            update_user_status(args, 1);
+            handle_join(args);
         } else if (strcmp(command, "send") == 0) {
-            char *send_name = strtok(args, " ");
-            char *send_msg = strtok(NULL, "");
-            log_chat_event(send_name, send_msg, MESSAGE);
+            handle_message(args);
         } else if (strcmp(command, "list") == 0) {
-            print_online_users();
+            handle_list(args);
         } else if (strcmp(command, "leave") == 0) {
-            log_chat_event(args, "", LEAVE);
-            update_user_status(args, 0);
+            handle_leave(args);
         } else if (strcmp(command, "exit") == 0) {
-            save_users_to_file();
-            return 0;
+            handle_exit(args);
         }
     } while (result != NULL);
     return 0;
