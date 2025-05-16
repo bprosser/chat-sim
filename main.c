@@ -14,8 +14,21 @@ int main() {
         printf("> ");
         result = fgets(buffer, sizeof(buffer), stdin);
         buffer[strcspn(buffer, "\n")] = '\0';
+        if (buffer[0] == '\0') {
+            continue;
+        }
         char *command = strtok(buffer, " ");
         char *args = strtok(NULL, "");
+        if (args != NULL) {
+            while (*args == ' ') {
+                args++;
+            }
+
+            if (*args == '\0') {
+                args = NULL;
+            }
+        }
+
         if (strcmp(command, "join") == 0) {
             handle_join(args);
         } else if (strcmp(command, "send") == 0) {
