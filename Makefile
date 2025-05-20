@@ -1,7 +1,7 @@
 cc = gcc
 CFLAGS = -Wall -Wextra -std=c11 -g
 TARGET = chat-sim
-SRC = main.c chat.c commands.c persistence.c
+SRC = main.c chat.c commands.c persistence.c util.c
 OBJ = $(SRC:.c=.o)
 
 $(TARGET): $(OBJ)

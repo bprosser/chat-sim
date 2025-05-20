@@ -4,6 +4,7 @@
 #include "chat.h"
 #include "commands.h"
 #include "persistence.h"
+#include "util.h"
 
 int main() {
     load_users_from_file();
@@ -19,15 +20,8 @@ int main() {
         }
         char *command = strtok(buffer, " ");
         char *args = strtok(NULL, "");
-        if (args != NULL) {
-            while (*args == ' ') {
-                args++;
-            }
 
-            if (*args == '\0') {
-                args = NULL;
-            }
-        }
+        args = normalize_args(args);
 
         if (strcmp(command, "join") == 0) {
             handle_join(args);
