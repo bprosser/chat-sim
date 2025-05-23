@@ -44,14 +44,14 @@ void print_online_users(void) {
     for (int i = 0; i < user_count; i++) {
         if (chat_users[i].online == 1) {
             if (!found) {
-                printf("chat_users still online:\n");
+                printf("Users currently online:\n");
                 found = 1;
             }
             printf("- %s\n", chat_users[i].name);
         }
     }
     if (!found) {
-        printf("No chat_users currently online.\n");
+        printf("No users currently online.\n");
     }
 }
 
