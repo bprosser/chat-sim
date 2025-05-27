@@ -48,6 +48,8 @@ int main() {
             handle_list(args);
         } else if (strcmp(command, "leave") == 0) {
             handle_leave(args);
+        } else if (strcmp(command, "help") == 0) {
+            handle_help(args);
         } else if (strcmp(command, "exit") == 0) {
             handle_exit(args);
         }

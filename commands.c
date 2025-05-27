@@ -60,3 +60,26 @@ void handle_exit(char *args) {
     save_users_to_file();
     exit(0);
 }
+
+void print_help_entry(const char *cmd, const char *desc) {
+    const int indent = 2;
+    const int padding = 20;
+    printf("%*s%s%*s - %s\n", indent, "", cmd, padding - (int)strlen(cmd) - 3, "", desc);
+}
+
+void handle_help(char *args) {
+    (void)args;
+    const char *join = "join <user>";
+    const char *send = "send <user> <msg>";
+    const char *list = "list";
+    const char *leave = "leave <user>";
+    const char *help = "help";
+    const char *exit = "exit";
+    printf("Available commands:\n");
+    print_help_entry(join, "Join the chat");
+    print_help_entry(send, "Send a message to a user");
+    print_help_entry(list, "List all online users");
+    print_help_entry(leave, "Leave the chat");
+    print_help_entry(help, "Show this help message");
+    print_help_entry(exit, "Save users and exit");
+}
