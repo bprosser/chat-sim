@@ -1,14 +1,18 @@
+
 #include "chat.h"
 
 #include <stdio.h>
 #include <string.h>
 
+// Arrays of chat messages and users, using types defined in chat.h
 struct chat_message chat_messages[MAX_CHAT_MESSAGES];
 struct chat_user chat_users[MAX_CHAT_USERS];
 
+// Track the current number of users and messages
 int user_count = 0;
 int message_count = 0;
 
+// Prints a formatted chat event based on the message type (JOIN, LEAVE, MESSAGE)
 void print_message(struct chat_message *msg) {
     switch (msg->type) {
         case JOIN:
@@ -26,6 +30,7 @@ void print_message(struct chat_message *msg) {
     }
 }
 
+// Updates a user's online status, or adds a new user if not found
 void update_user_status(const char *name, int online) {
     for (int i = 0; i < user_count; i++) {
         if (strcmp(name, chat_users[i].name) == 0) {
@@ -39,6 +44,7 @@ void update_user_status(const char *name, int online) {
     }
 }
 
+// Prints list of users currently online
 void print_online_users(void) {
     int found = 0;
     for (int i = 0; i < user_count; i++) {
@@ -55,6 +61,7 @@ void print_online_users(void) {
     }
 }
 
+// Logs a chat event from a sender, with content and message type
 void log_chat_event(char *sender, char *content, enum message_type type) {
     strcpy(chat_messages[message_count].sender, sender);
     strcpy(chat_messages[message_count].content, content);
