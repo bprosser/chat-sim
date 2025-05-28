@@ -67,19 +67,21 @@ void print_help_entry(const char *cmd, const char *desc) {
     printf("%*s%s%*s - %s\n", indent, "", cmd, padding - (int)strlen(cmd) - 3, "", desc);
 }
 
+typedef struct {
+    const char *cmd;
+    const char *desc;
+} HelpEntry;
+
 void handle_help(char *args) {
     (void)args;
-    const char *join = "join <user>";
-    const char *send = "send <user> <msg>";
-    const char *list = "list";
-    const char *leave = "leave <user>";
-    const char *help = "help";
-    const char *exit = "exit";
+
+    HelpEntry help_entries[] = {
+        {"join <user>", "Join the chat"},   {"send <user> <msg>", "Send a message to a user"},
+        {"list", "List all online users"},  {"leave <user>", "Leave the chat"},
+        {"help", "Show this help message"}, {"exit", "Save users and exit"}};
+
     printf("Available commands:\n");
-    print_help_entry(join, "Join the chat");
-    print_help_entry(send, "Send a message to a user");
-    print_help_entry(list, "List all online users");
-    print_help_entry(leave, "Leave the chat");
-    print_help_entry(help, "Show this help message");
-    print_help_entry(exit, "Save users and exit");
+    for (int i = 0; i < (int)(sizeof(help_entries) / sizeof(help_entries[0])); i++) {
+        print_help_entry(help_entries[i].cmd, help_entries[i].desc);
+    }
 }
